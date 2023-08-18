@@ -33,15 +33,15 @@ export function useSaveEmployee() {
   }, [payload]);
 
   useEffect(() => {
-
-    if(isSaved && payload) {
+    if (isSaved && payload) {
       addAlert({
-        message: `Employee record: ${payload.name} ${payload._id ? ' has been updated' : 'has been created'}`,
-        severity: 'success'
-      })
+        message: `Employee record: ${payload.name} ${
+          payload._id ? " has been updated" : "has been created"
+        }`,
+        severity: "success",
+      });
     }
   }, [payload, isSaved]);
 
-
-  return { employee, isSaved, save: setPayload };
+  return { employee, isSaved, isError, save: setPayload };
 }

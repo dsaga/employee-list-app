@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useApi } from "../../services/useApi";
 import { IDeleteEmployeeDto } from "types/index";
 import { useAlertToasts } from "@/components/AlertToast";
+import { useEmployeeStore } from "./useEmployeeStore";
 
 interface IDeleteEmployeeProps {
   softDelete?: boolean;
@@ -9,6 +10,10 @@ interface IDeleteEmployeeProps {
 
 export function useDeleteEmployee({ softDelete }: IDeleteEmployeeProps) {
   const { addAlert } = useAlertToasts();
+
+  const deleteEmployee = useEmployeeStore((store) =>
+    softDelete ? store.deleteEmployee : store.hardDelete
+  );
 
   const [payload, setPayload] = useState<IDeleteEmployeeDto>();
 
@@ -33,13 +38,14 @@ export function useDeleteEmployee({ softDelete }: IDeleteEmployeeProps) {
   }, [payload]);
 
   useEffect(() => {
-    if (isDeleted) {
+    if (isDeleted && payload?.employeeId) {
+      deleteEmployee(payload.employeeId);
       addAlert({
-        message: `Employee record: ${payload?.employeeId} deleted successfully.`,
+        message: `Employee record: ${payload.employeeId} deleted successfully.`,
         severity: "success",
       });
     }
   }, [isDeleted, addAlert, payload]);
 
-  return { isDeleted, deleteEmployee: setPayload };
+  return { isDeleted, save: setPayload };
 }

@@ -7,16 +7,19 @@
   position: relative;
   display: flex;
   justify-content: center;
+  min-height: 500px;
 }
 
 .loaderAnim {
   // position in center with absolute
-
 }
 
+.pageTitle {
+  margin-bottom: 2rem;
+}
 
 .moreContainer {
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
 }

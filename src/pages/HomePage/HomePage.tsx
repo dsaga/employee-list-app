@@ -1,6 +1,9 @@
 import {
+  EmployeeCreateDialog,
   EmployeeForm,
+  EmployeeProvider,
   Employees,
+  useEmployee,
   useGetEmployees,
   useSaveEmployee,
 } from "@/features/employee";
@@ -21,7 +24,9 @@ export function HomePage() {
   const { employees, isLoading, reload, isMore, next } = useGetEmployees({
     limit: 20,
   });
-  const { save, isSaved } = useSaveEmployee();
+
+  const saveEmployee = useSaveEmployee();
+
   const [isCreating, setIsCreating] = useState(false);
 
   const handleToggleForm = () => {
@@ -29,66 +34,68 @@ export function HomePage() {
   };
 
   useEffect(() => {
-    if (isSaved) {
+    if (saveEmployee.isSaved) {
       reload();
       isCreating && handleToggleForm();
     }
-  }, [isSaved]);
+  }, [saveEmployee.isSaved]);
 
   const handleSaveForm = (payload: ICreateEmployeeDto) => {
-    save(payload);
+    saveEmployee.save(payload);
   };
 
   return (
-    <Box className={styles.pageContainer} flexDirection={"row"}>
-      <Box display="flex" justifyContent={"space-around"}>
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="text.primary"
-          gutterBottom
+    <EmployeeProvider>
+      <Box className={styles.pageContainer} flexDirection={"row"}>
+        <Box
+          className={styles.pageTitle}
+          display="flex"
+          justifyContent={"space-around"}
         >
-          Employees
-        </Typography>
-        <Box display={"flex"} alignItems={"center"}>
-          <Button onClick={handleToggleForm} size="medium" variant={"outlined"}>
-            Add New Employee
-          </Button>
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="text.primary"
+            gutterBottom
+          >
+            Employees
+          </Typography>
+          <Box display={"flex"} alignItems={"center"}>
+            <Button
+              onClick={handleToggleForm}
+              size="medium"
+              variant={"outlined"}
+            >
+              Add New Employee
+            </Button>
+          </Box>
+        </Box>
+
+        <EmployeeCreateDialog
+          isOpen={isCreating}
+          onClose={handleToggleForm}
+          onCreate={handleSaveForm}
+        />
+
+        <Box
+          className={styles.employeesContainer}
+          sx={{
+            py: 2,
+          }}
+        >
+          {isLoading && <CircularProgress className={styles.loaderAnim} />}
+          {employees && <Employees employees={employees} />}
+        </Box>
+
+        <Box className={styles.moreContainer}>
+          {isMore && (
+            <Button onClick={next} size="medium" variant={"outlined"}>
+              Show More
+            </Button>
+          )}
         </Box>
       </Box>
-
-      <Dialog
-        open={isCreating}
-        onClose={handleToggleForm}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Create new employee"}
-        </DialogTitle>
-        <DialogContent>
-          <EmployeeForm onSave={handleSaveForm} />
-        </DialogContent>
-      </Dialog>
-
-      <Box
-        className={styles.employeesContainer}
-        sx={{
-          py: 2,
-        }}
-      >
-        {isLoading && <CircularProgress className={styles.loaderAnim} />}
-        {employees && <Employees deleteType="soft" employees={employees} />}
-      </Box>
-
-      <Box className={styles.moreContainer}>
-        {isMore && (
-          <Button onClick={next} size="medium" variant={"outlined"}>
-            Show More
-          </Button>
-        )}
-      </Box>
-    </Box>
+    </EmployeeProvider>
   );
 }

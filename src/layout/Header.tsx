@@ -36,14 +36,6 @@ export function Header() {
           >
             Employee Archive
           </Link>
-          <Link
-            variant="button"
-            color="text.primary"
-            href="#"
-            sx={{ my: 1, mx: 1.5 }}
-          >
-            Support
-          </Link>
         </nav>
         <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
           Login

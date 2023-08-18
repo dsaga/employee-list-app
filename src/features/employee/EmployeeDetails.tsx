@@ -1,4 +1,5 @@
 import { IEmployeeEntity } from "types/index";
+import { Link as RouterLink } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -8,26 +9,20 @@ import Avatar from "@mui/material/Avatar";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { useRandomUserMeta } from "@/services/useRandomUserMeta";
-import { useDeleteEmployee } from "./useDeleteEmployee";
 import { EmployeeConfirmDialog } from "./EmployeeConfirmDialog";
 import { useState } from "react";
 import { EmployeeEditDialog } from "./EmployeeEditDialog";
-import { useSaveEmployee } from ".";
+import { useEmployee } from ".";
 
 interface IEmployeeDetailsProps {
   employee: IEmployeeEntity;
-  deleteType?: "soft" | "hard";
 }
 
-export function EmployeeDetails({
-  employee,
-  deleteType = "soft",
-}: IEmployeeDetailsProps) {
+export function EmployeeDetails({ employee }: IEmployeeDetailsProps) {
   const { picture } = useRandomUserMeta({ employeeId: employee._id });
-  const { save } = useSaveEmployee();
-  const { deleteEmployee } = useDeleteEmployee({
-    softDelete: deleteType === "soft",
-  });
+
+  const { saveEmployee, deleteEmployee } = useEmployee();
+
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
@@ -40,16 +35,20 @@ export function EmployeeDetails({
   };
 
   const handleDelete = () => {
-    deleteEmployee({ employeeId: employee._id });
+    deleteEmployee.save({ employeeId: employee._id });
     handleToggleDialog();
   };
 
   return (
-    <Box sx={{ minWidth: 275 }}>
+    <Box data-testid="employee-details" sx={{ minWidth: 275 }}>
       <Card variant="outlined">
         <CardHeader
           avatar={<Avatar src={picture?.medium} />}
-          title={employee.name}
+          title={
+            <RouterLink to={`/employees/${employee._id}`}>
+              {employee.name}
+            </RouterLink>
+          }
           subheader={employee.email}
           sx={{
             backgroundColor: (theme) =>
@@ -69,7 +68,7 @@ export function EmployeeDetails({
                 isOpen={isEditDialogOpen}
                 onClose={handleToggleEditDialog}
                 employee={employee}
-                onEdit={save}
+                onEdit={saveEmployee.save}
               />
               <EmployeeConfirmDialog
                 isOpen={isDeleteDialogOpen}
@@ -84,10 +83,13 @@ export function EmployeeDetails({
         />
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {employee._id}
+            {employee.phoneNumber}
           </Typography>
           <Typography variant="h5" component="div">
             {employee.name}
+          </Typography>
+          <Typography variant="body1" component="p">
+            {Object.values(employee.homeAddress).join(", ")}
           </Typography>
         </CardContent>
       </Card>

@@ -25,7 +25,7 @@ export function useRandomUserMeta({ employeeId }: IRandomUserMetaProps) {
     `employee-${employeeId}-picture`
   );
   const initialData = pictureDataFromLocalStorage
-    ? { results: [{ picture: JSON.parse(pictureDataFromLocalStorage) }] }
+    ? { results: [{ picture: JSON.parse(pictureDataFromLocalStorage) }] } as IRandomUserMetaResponseDto
     : undefined;
 
   const { data, error } = useSWR<IRandomUserMetaResponseDto>(
