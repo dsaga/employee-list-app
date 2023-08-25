@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import styles from "./HomePage.module.scss";
 
 export function HomePage() {
+  console.log('HomePage');
   const { employees, isLoading, reload, isMore, next } = useGetEmployees({
     limit: 20,
   });

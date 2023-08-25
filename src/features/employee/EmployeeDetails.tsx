@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
-import { IconButton } from "@mui/material";
+import { CardActions, IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { useRandomUserMeta } from "@/services/useRandomUserMeta";
 import { EmployeeConfirmDialog } from "./EmployeeConfirmDialog";
@@ -56,30 +56,6 @@ export function EmployeeDetails({ employee }: IEmployeeDetailsProps) {
                 ? theme.palette.grey[200]
                 : theme.palette.grey[700],
           }}
-          action={
-            <>
-              <IconButton onClick={handleToggleEditDialog}>
-                <Edit />
-              </IconButton>
-              <IconButton onClick={handleToggleDialog}>
-                <Delete />
-              </IconButton>
-              <EmployeeEditDialog
-                isOpen={isEditDialogOpen}
-                onClose={handleToggleEditDialog}
-                employee={employee}
-                onEdit={saveEmployee.save}
-              />
-              <EmployeeConfirmDialog
-                isOpen={isDeleteDialogOpen}
-                onClose={handleToggleDialog}
-                onConfirm={handleDelete}
-                confirmText={"Delete"}
-                headerTitle={`Delete Employee: ${employee.name}`}
-                headerMessage={`Are you sure you want to delete ${employee.name}?`}
-              />
-            </>
-          }
         />
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -92,6 +68,28 @@ export function EmployeeDetails({ employee }: IEmployeeDetailsProps) {
             {Object.values(employee.homeAddress).join(", ")}
           </Typography>
         </CardContent>
+        <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <IconButton size="small" onClick={handleToggleEditDialog}>
+            <Edit />
+          </IconButton>
+          <IconButton size="small" onClick={handleToggleDialog}>
+            <Delete />
+          </IconButton>
+          <EmployeeEditDialog
+            isOpen={isEditDialogOpen}
+            onClose={handleToggleEditDialog}
+            employee={employee}
+            onEdit={saveEmployee.save}
+          />
+          <EmployeeConfirmDialog
+            isOpen={isDeleteDialogOpen}
+            onClose={handleToggleDialog}
+            onConfirm={handleDelete}
+            confirmText={"Delete"}
+            headerTitle={`Delete Employee: ${employee.name}`}
+            headerMessage={`Are you sure you want to delete ${employee.name}?`}
+          />
+        </CardActions>
       </Card>
     </Box>
   );

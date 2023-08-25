@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useApi } from "@/services/useApi";
 import { IGetEmployeeDto } from "types/index";
 import { useEmployeeStore } from "./useEmployeeStore";
@@ -33,22 +33,24 @@ export function useGetEmployees({
   useEffect(() => {
     if (data.response?.employees && currentPage === 1) {
       setEmployees(data.response.employees);
-    }
-    else if (data.response?.employees && currentPage > 1) {
+    } else if (data.response?.employees && currentPage > 1) {
       setEmployees([...employees, ...data.response.employees]);
     }
   }, [data, currentPage]);
-  
 
   useEffect(() => {
     fetch();
   }, [currentPage]);
+
+  const next = useMemo(() => {
+    return () => setCurrentPage(currentPage + 1);
+  }, [setCurrentPage]);
 
   return {
     employees: employees,
     isLoading: data.status === "loading",
     isMore: data.response && data.response.count > currentPage * limit,
     reload: fetch,
-    next: () => setCurrentPage(currentPage + 1),
+    next,
   };
 }
