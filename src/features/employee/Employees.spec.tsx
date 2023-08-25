@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, test, vi, Mock } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Employees } from "./Employees";
 import { mockEmployees } from "@/test/mocks";
-import { useEmployee } from "./EmployeeProvider";
+import { useEmployee } from "./providers/EmployeeProvider";
 import { useRandomUserMeta } from "@/services/useRandomUserMeta";
 
 vi.mock("@/services/useRandomUserMeta", () => ({

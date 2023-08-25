@@ -1,22 +1,14 @@
 import {
   EmployeeCreateDialog,
-  EmployeeForm,
   EmployeeProvider,
   Employees,
-  useEmployee,
+  SaveFormProvider,
   useGetEmployees,
-  useSaveEmployee,
 } from "@/features/employee";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-
-import { useEffect, useState } from "react";
-import { ICreateEmployeeDto } from "types/create-employee.dto";
 
 import styles from "./HomePage.module.scss";
 
@@ -24,25 +16,6 @@ export function HomePage() {
   const { employees, isLoading, reload, isMore, next } = useGetEmployees({
     limit: 20,
   });
-
-  const saveEmployee = useSaveEmployee();
-
-  const [isCreating, setIsCreating] = useState(false);
-
-  const handleToggleForm = () => {
-    setIsCreating(!isCreating);
-  };
-
-  useEffect(() => {
-    if (saveEmployee.isSaved) {
-      reload();
-      isCreating && handleToggleForm();
-    }
-  }, [saveEmployee.isSaved]);
-
-  const handleSaveForm = (payload: ICreateEmployeeDto) => {
-    saveEmployee.save(payload);
-  };
 
   return (
     <EmployeeProvider>
@@ -62,21 +35,26 @@ export function HomePage() {
             Employees
           </Typography>
           <Box display={"flex"} alignItems={"center"}>
-            <Button
-              onClick={handleToggleForm}
-              size="medium"
-              variant={"outlined"}
-            >
-              Add New Employee
-            </Button>
+            <SaveFormProvider onSaved={reload}>
+              {({ isActiveForm, onToggleForm, onSaveForm }) => (
+                <>
+                  <Button
+                    onClick={onToggleForm}
+                    size="medium"
+                    variant={"outlined"}
+                  >
+                    Add New Employee
+                  </Button>
+                  <EmployeeCreateDialog
+                    isOpen={isActiveForm}
+                    onClose={onToggleForm}
+                    onCreate={onSaveForm}
+                  />
+                </>
+              )}
+            </SaveFormProvider>
           </Box>
         </Box>
-
-        <EmployeeCreateDialog
-          isOpen={isCreating}
-          onClose={handleToggleForm}
-          onCreate={handleSaveForm}
-        />
 
         <Box
           className={styles.employeesContainer}

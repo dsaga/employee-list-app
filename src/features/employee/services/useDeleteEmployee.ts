@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useApi } from "../../services/useApi";
+import { useApi } from "@/services/useApi";
 import { IDeleteEmployeeDto } from "types/index";
 import { useAlertToasts } from "@/components/AlertToast";
 import { useEmployeeStore } from "./useEmployeeStore";

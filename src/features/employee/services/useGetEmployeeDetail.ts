@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useApi } from "../../services/useApi";
+import { useApi } from "@/services/useApi";
 import { IEmployeeEntity } from "types/index";
 
 interface IGetEmployeeDetailProps {

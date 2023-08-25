@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { useSaveEmployee } from "./useSaveEmployee";
-import { useDeleteEmployee } from "./useDeleteEmployee";
+import { useSaveEmployee, useDeleteEmployee } from "@/features/employee";
 
 interface IEmployeeContext {
   saveEmployee: ReturnType<typeof useSaveEmployee>;

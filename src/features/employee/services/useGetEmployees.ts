@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useApi } from "../../services/useApi";
+import { useApi } from "@/services/useApi";
 import { IGetEmployeeDto } from "types/index";
 import { useEmployeeStore } from "./useEmployeeStore";
 

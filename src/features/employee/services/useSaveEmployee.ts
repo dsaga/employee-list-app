@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useApi } from "../../services/useApi";
+import { useApi } from "@/services/useApi";
 import { useAlertToasts } from "@/components/AlertToast";
 import { ICreateEmployeeDto, IEmployeeEntity } from "types/index";
 
