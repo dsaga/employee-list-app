@@ -7,7 +7,7 @@ interface IGetEmployeeDetailProps {
 }
 
 export function useGetEmployeeDetail({ id }: IGetEmployeeDetailProps) {
-  const { data, fetch } = useApi<IEmployeeEntity>(`/employees/id/${id}`, "GET");
+  const { data, fetch } = useApi<IEmployeeEntity>(`/employees/${id}`, "GET");
 
   useEffect(() => {
     if (id) {

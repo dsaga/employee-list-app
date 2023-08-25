@@ -17,10 +17,10 @@ export function useDeleteEmployee({ softDelete }: IDeleteEmployeeProps) {
 
   const [payload, setPayload] = useState<IDeleteEmployeeDto>();
 
-  const deletePart = softDelete ? "soft-delete" : "permanent-delete";
+  const deletePart = softDelete ? "" : "permanent";
 
   const { fetch, data } = useApi(
-    `/employees/${deletePart}/${payload?.employeeId}`,
+    `/employees/${payload?.employeeId}/${deletePart}`,
     "DELETE"
   );
 

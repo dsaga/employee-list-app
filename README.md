@@ -1,4 +1,4 @@
-# Employee Directory by Dusan Petkovic (dsaga)
+# Employee Directory demo app
 
 This is an employee directory web application built with JavaScript, TypeScript, React, npm, and Yarn. The application allows users to add new employees, list existing employees, list deleted employees, and more.
 
@@ -12,6 +12,7 @@ This is an employee directory web application built with JavaScript, TypeScript,
 - Mui 5
 - Formik 
 - Yup
+- Express
 
 ## Features
 

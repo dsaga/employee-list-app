@@ -23,10 +23,10 @@ export function useGetEmployees({
 
   const [currentPage, setCurrentPage] = useState(page);
 
-  const deletedPart = deleted ? "/deleted" : "";
+  const deletedPart = deleted ? "&deleted=true" : "";
 
   const { data, fetch } = useApi<IGetEmployeeDto>(
-    `/employees${deletedPart}?page=${currentPage}&limit=${limit}`,
+    `/employees?page=${currentPage}&limit=${limit}${deletedPart}`,
     "GET"
   );
 
